@@ -1,0 +1,66 @@
+@extends('layouts.admin')
+
+@section('content')
+    <div class="mt-5 ms-3">
+        <a href="{{ url()->previous() }}"> &leftarrow; Torna indietro</a>
+    </div>
+
+    <h2 class="text-center mt-5">Dettagli di:</h2>
+    <h4 class="text-center mt-1">{{ $portfolio->title }}</h4>
+
+    <div class="container mt-4">
+        <div>
+           
+            @if (count($portfolio->technologies))
+            <h6 class="mt-4">Tecnologie usate: </h6>
+                @foreach ($portfolio->technologies as $technology) 
+                
+                    <span class="badge" style="background-color: {{ $technology->hex_color }}">
+                        {{ $technology->name }}
+                    </span>
+                @endforeach
+            @else
+                <h6>Nessuna tecnologia utilizzata</h6>
+            @endif
+            
+        </div>
+
+        <h6 class="mt-4">Tipologia: </h6>
+        {{ $portfolio->type ? $portfolio->type->name : 'Nessuna tipologia' }}
+
+
+        <h6 class="mt-4">Descrizione: </h6>
+        <p>
+            {{ $portfolio->description }}
+        </p>
+
+        <h6 class="mt-4">Data di creazione: </h6>
+        {{ $portfolio->created_at }}
+
+        <h6 class="mt-4">Slug: </h6>
+        {{ $portfolio->slug }}
+
+        @if ($portfolio->cover_image)
+            <h6 class="mt-4">Immagine: </h6>
+            <img src="{{ asset('storage/' . $portfolio->cover_image) }}" alt="Immagine di {{ $portfolio->title }}">
+        @else
+            <h6 class="mt-4">Nessuna immagine presente </h6>
+        @endif
+
+
+
+    </div>
+
+
+    <div class="mx-2 my-3 d-flex">
+        <a class="btn btn-warning me-2" href="{{ route('admin.portfolios.edit', ['portfolio' => $portfolio->slug]) }}">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </a>
+
+        <form action="{{ route('admin.portfolios.destroy', ['portfolio' => $portfolio->slug]) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+        </form>
+    </div>
+@endsection
