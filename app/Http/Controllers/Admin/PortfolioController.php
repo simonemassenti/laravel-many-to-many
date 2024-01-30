@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePortfolioRequest;
 use App\Http\Requests\UpdatePortfolioRequest;
 use App\Models\Portfolio;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +33,8 @@ class PortfolioController extends Controller
 	public function create()
 	{
         $types = Type::all();
-		return view('admin.portfolios.create', compact('types'));
+        $technologies = Technology::all();
+		return view('admin.portfolios.create', compact('types', 'technologies'));
 	}
 
 	/**
@@ -56,6 +58,10 @@ class PortfolioController extends Controller
         }
         
 		$portfolio->save();
+
+        if($request->has('technologies')){
+            $portfolio->technologies()->attach($request->technologies);
+        }
 
 		return redirect()->route('admin.portfolios.show', ['portfolio' => $portfolio->slug]);
 

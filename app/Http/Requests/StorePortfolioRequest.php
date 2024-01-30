@@ -29,6 +29,7 @@ class StorePortfolioRequest extends FormRequest
             'description' => ['nullable', 'max: 500'],
             'type_id' => ['nullable', 'exists:types,id'],
             'cover_image' => ['nullable', 'image', 'max:1024'],
+            'technologies' => ['exists:technologies,id'],
         ];
     }
 
@@ -43,6 +44,7 @@ class StorePortfolioRequest extends FormRequest
             'type_id.exists' => "La tipologia scelta non esiste",
             'cover_image.image' => "Il file deve essere un'immagine",
             'cover_image.max' => "Il file è troppo pesante",
+            'technologies.exists' => "La tecnologia selezionata non esiste, per favore ricontrolla le tecnologie scelte",
         ];
     }
 }

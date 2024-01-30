@@ -9,11 +9,11 @@
         </div>
     @endif
 
-    <div class="text-end">
+    <div class="text-end me-3">
         <a class="btn btn-success" href="{{ route('admin.types.create') }}">Crea una nuova tipologia</a>
     </div>
 
-    <div>
+    <div class="container w-50 mt-3">
         <table class="table">
             <thead>
                 <tr>

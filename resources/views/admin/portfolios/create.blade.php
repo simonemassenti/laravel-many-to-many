@@ -56,6 +56,21 @@
                 @enderror
             </div>
 
+            <div class="mb-3">
+                @foreach ($technologies as $technology)
+                    <div class="form-check">
+                        <input @checked(in_array($technology->id, old('technologies', []))) type="checkbox" name="technologies[]" id="tech-{{ $technology->id }}" value="{{ $technology->id }}">
+                        <label for="tech-{{ $technology->id }}">{{ $technology->name }}</label>
+                    </div>
+                @endforeach
+
+                @error('technologies')
+                    <div class="text-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
             <button class="btn btn-success" type="submit">Crea</button>
         </form>
     </div>
