@@ -87,7 +87,8 @@ class PortfolioController extends Controller
 	public function edit(Portfolio $portfolio)
 	{
         $types = Type::all();
-		return view('admin.portfolios.edit', compact('portfolio'), compact('types'));
+        $technologies = Technology::all();
+		return view('admin.portfolios.edit', compact('portfolio'), compact('types', 'technologies'));
 	}
 
 	/**
@@ -100,6 +101,7 @@ class PortfolioController extends Controller
 	public function update(UpdatePortfolioRequest $request, Portfolio $portfolio)
 	{
 		$form_data = $request->all();
+ 
         if($request->hasFile('cover_image')){
             
             if($portfolio->cover_image){
@@ -108,8 +110,14 @@ class PortfolioController extends Controller
             $image_path = Storage::put('portfolio_images', $request->cover_image);
             $form_data['cover_image'] = $image_path;
         }
-		$portfolio->update($form_data);
 
+		$portfolio->update($form_data);
+        
+        if($request->has('technologies')){
+            $portfolio->technologies()->sync($request->technologies);
+        }else{
+            $portfolio->technologies()->sync([]);
+        }
 
 		return redirect()->route('admin.portfolios.show', ['portfolio' => $portfolio->slug]);
 	}
